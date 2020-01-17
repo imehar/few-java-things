@@ -3,6 +3,7 @@ package com.mehar.todo;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,7 +14,10 @@ public class Controller {
     private List<TodoItem> todoItems;
 
     @FXML
-    private ListView todoListView;
+    private ListView<TodoItem> todoListView;
+    @FXML
+    private TextArea itemDetailTextArea;
+
     public void initialize() {
         TodoItem item1 = new TodoItem("Birthday card", "Buy card for John Doe",
                 LocalDate.of(2019, Month.DECEMBER, 22));
@@ -34,5 +38,16 @@ public class Controller {
 
         todoListView.getItems().setAll(todoItems);
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
+
+    @FXML
+    public void handleView(){
+        TodoItem item = (TodoItem) todoListView.getSelectionModel().getSelectedItem();
+        
+        StringBuilder sb = new StringBuilder(item.getDetails());
+        sb.append("\n\n\n");
+        sb.append("Due :");
+        sb.append(item.getDeadline().toString());
+        itemDetailTextArea.setText(sb.toString());
     }
 }
